@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#fdf3f1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="description" content="猫猫法庭：奶牛猫法官帮情侣、室友、同事化解小矛盾。判决书 + 猫爪天平责任分配 + 和解方案 + 亲密指数。" />
+<title>猫猫法庭 · 亲友吵架调节｜奶牛猫法官</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+<style>
+  :root{
+    --pink:#ff6d8f; --pink-soft:#ffe8ee; --blue:#5b9bff; --blue-soft:#e7f0ff;
+    --ink:#2c2733; --muted:#8a8296; --paper:#fffdf8; --line:#efe7e3; --gold:#c98a13; --bg:#fdf3f1;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink);min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(900px 420px at 8% -8%,#ffe6ec 0,transparent 60%),
+      radial-gradient(700px 340px at 100% 0,#e7f0ff 0,transparent 55%),
+      var(--bg);
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:12px 14px calc(96px + var(--safe-b))}
+
+  /* ── 顶栏 ── */
+  header.top{display:flex;align-items:center;gap:10px;padding:6px 2px 12px;position:sticky;top:0;z-index:30;
+    background:linear-gradient(#fdf3f1 72%,rgba(253,243,241,0));backdrop-filter:blur(6px)}
+  .logo-cat{width:44px;height:44px;flex:0 0 44px}
+  .brand h1{font-size:17px;margin:0;letter-spacing:.5px}
+  .brand p{margin:1px 0 0;font-size:11px;color:var(--muted)}
+  .meter{margin-left:auto;text-align:right;line-height:1.1}
+  .meter .val{font-size:20px;font-weight:800;color:var(--pink)}
+  .meter .lbl{font-size:10px;color:var(--muted)}
+  .gear{margin-left:8px;width:34px;height:34px;border-radius:50%;border:1px solid #ecdfe4;background:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex:0 0 34px}
+
+  .card{background:#fff;border-radius:18px;padding:15px;box-shadow:0 8px 22px rgba(120,90,110,.09);margin-bottom:13px}
+  .judge-box{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#fff,#fff6f8)}
+  .judge-box svg{width:74px;height:74px;flex:0 0 74px}
+  .bubble{background:var(--pink-soft);border-radius:14px 14px 14px 4px;padding:11px 12px;font-size:13.5px;line-height:1.65}
+
+  .party{border-radius:16px;padding:12px;margin-bottom:11px;border:2px solid transparent}
+  .party.a{background:var(--pink-soft);border-color:#ffd2de}
+  .party.b{background:var(--blue-soft);border-color:#cfe0ff}
+  .party .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff}
+  .tag.a{background:var(--pink)} .tag.b{background:var(--blue)}
+  input[type=text],input[type=password],textarea,select{
+    width:100%;border:1px solid #e6dfe6;border-radius:12px;padding:11px 12px;font-size:16px; /* 16px 防 iOS 聚焦缩放 */
+    font-family:inherit;background:#fff;color:var(--ink);outline:none;resize:vertical;-webkit-appearance:none}
+  input[type=text].name{max-width:150px;padding:8px 10px;font-weight:700;font-size:16px}
+  textarea{min-height:104px;line-height:1.65}
+  textarea::placeholder{color:#c0b8c2}
+
+  .btn{display:flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;font-family:inherit;
+    font-size:15px;font-weight:700;border-radius:999px;padding:14px 20px;min-height:48px;transition:.16s;width:100%}
+  .btn.primary{background:linear-gradient(135deg,#ff8fae,#ff6d8f);color:#fff;box-shadow:0 8px 18px rgba(255,110,145,.32)}
+  .btn.primary:active{transform:scale(.985)}
+  .btn.ghost{background:#fff;color:var(--muted);border:1px solid #e8e0e6}
+  .btn.dark{background:#2c2733;color:#fff}
+  .btn.sm{font-size:13.5px;padding:11px 14px;min-height:42px}
+  .btn:disabled{opacity:.5}
+  .btn-row{display:flex;gap:9px}
+  .hint{font-size:12px;color:var(--muted);margin:8px 2px 0;line-height:1.6}
+  .link{color:var(--pink);font-size:12px;cursor:pointer;text-decoration:underline dotted;background:none;border:0;font-family:inherit;padding:0}
+
+  /* ── 判决书 ── */
+  .paper{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 15px;position:relative;overflow:hidden}
+  .paper h2{text-align:center;font-size:20px;letter-spacing:5px;margin:2px 0 2px}
+  .caseno{text-align:center;font-size:11.5px;color:var(--muted);margin-bottom:14px}
+  .sec{margin:15px 0}
+  .sec h3{font-size:12.5px;color:var(--gold);letter-spacing:1.5px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+  .sec h3:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#f0e0c4,transparent)}
+  .sec p{margin:0;font-size:14px;line-height:1.8}
+  .core{display:flex;gap:9px;flex-wrap:wrap}
+  .core div{flex:1;min-width:100%;border-radius:12px;padding:10px 11px;font-size:13px;line-height:1.6}
+  .core .ca{background:var(--pink-soft)} .core .cb{background:var(--blue-soft)}
+  .balance{width:100%;max-width:400px;display:block;margin:0 auto}
+  .balance .beam,.balance .pan{transition:transform 1.1s cubic-bezier(.34,1.4,.5,1)}
+  .balance-note{font-size:12.5px;color:var(--muted);line-height:1.7;background:#fbf6ef;border-radius:12px;padding:9px 11px;margin:6px 0 0}
+  .balance-note b{color:var(--gold)}
+  .verdict-who{text-align:center;font-size:13.5px;margin:8px 0 2px}
+  .verdict-who b{color:var(--pink)}
+  .charge{display:flex;gap:9px;align-items:flex-start;padding:10px;border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:8px}
+  .lvl{font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px;white-space:nowrap;flex:0 0 auto}
+  .lvl.重罪{background:#ffe0e0;color:#d64545}
+  .lvl.轻罪{background:#fff0d8;color:#c98a13}
+  .lvl.微罪{background:#e6f5e9;color:#3d9257}
+  .charge .who{font-size:11.5px;color:var(--muted)}
+  .charge .txt{font-size:13.5px;line-height:1.55}
+  .verdict-text{background:#fff6ec;border-left:4px solid #e0a92e;padding:11px 12px;border-radius:0 12px 12px 0;font-size:14px;line-height:1.8}
+  .steps{counter-reset:s;padding:0;margin:0;list-style:none}
+  .steps li{position:relative;padding:10px 10px 10px 38px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+  .steps li:before{counter-increment:s;content:counter(s);position:absolute;left:9px;top:12px;width:21px;height:21px;border-radius:50%;
+    background:var(--pink);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .steps b{font-size:13.5px} .steps span{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.55}
+  .msgbox{background:#f4f9ff;border:1px dashed #bcd6ff;border-radius:14px;padding:12px;font-size:14px;line-height:1.8}
+  .catnote{text-align:center;font-size:12.5px;color:var(--muted);margin-top:14px;font-style:italic}
+  .stamp{position:absolute;right:12px;bottom:10px;width:64px;height:64px;opacity:.85;transform:rotate(-12deg)}
+
+  /* ── 亲密指数 ── */
+  .ring-wrap{display:flex;align-items:center;gap:14px}
+  .ring{position:relative;width:112px;height:112px;flex:0 0 112px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num b{font-size:28px;color:var(--pink);line-height:1}
+  .ring .num small{font-size:10.5px;color:var(--muted)}
+  .task{display:flex;align-items:center;gap:10px;padding:13px 12px;border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:8px;cursor:pointer}
+  .task:active{transform:scale(.99)}
+  .task.done{background:#f6fff8;border-color:#c9ecd3;opacity:.75}
+  .task .box{width:23px;height:23px;border-radius:7px;border:2px solid #ddd6dd;flex:0 0 23px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
+  .task.done .box{background:#43b76b;border-color:#43b76b}
+  .task .t{flex:1;font-size:14px}
+  .task.done .t{text-decoration:line-through;color:var(--muted)}
+  .task .p{font-size:12.5px;font-weight:800;color:var(--pink)}
+
+  /* ── 底部固定操作条 ── */
+  .dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 14px calc(10px + var(--safe-b));
+    background:linear-gradient(rgba(253,243,241,0),#fdf3f1 32%);display:flex;gap:9px;max-width:680px;margin:0 auto}
+  .dock .btn{box-shadow:0 6px 18px rgba(120,90,110,.16)}
+
+  .float{position:fixed;left:50%;top:32%;transform:translateX(-50%);font-size:30px;font-weight:900;color:var(--pink);
+    pointer-events:none;opacity:0;z-index:60;text-shadow:0 4px 14px rgba(255,110,145,.4)}
+  .float.go{animation:pop 1.2s ease-out}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}25%{opacity:1;transform:translate(-50%,-6px) scale(1.1)}100%{opacity:0;transform:translate(-50%,-56px) scale(1)}}
+  .hidden{display:none!important}
+  .loading{text-align:center;padding:26px 10px}
+  .gavel{width:96px;height:96px;animation:knock 1s ease-in-out infinite}
+  @keyframes knock{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+  .loading p{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+  .err{background:#fff0f0;color:#c14b4b;border:1px solid #ffd6d6;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:10px;line-height:1.6;word-break:break-all}
+  .foot{text-align:center;font-size:11px;color:#b7aeb8;margin-top:18px;line-height:1.7}
+
+  /* ── 设置弹层 ── */
+  .sheet{position:fixed;inset:0;z-index:70;background:rgba(40,32,40,.42);display:flex;align-items:flex-end;justify-content:center}
+  .sheet .inner{background:#fff;width:100%;max-width:680px;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + var(--safe-b));
+    max-height:88vh;overflow:auto;animation:up .24s ease-out}
+  @keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+  .sheet h3{margin:0 0 4px;font-size:16px}
+  .sheet .f{margin-top:12px}
+  .sheet label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+  .kv{font-size:12px;color:var(--muted);line-height:1.7;background:#faf6f8;border-radius:12px;padding:10px 12px;margin-top:12px}
+
+  @media (min-width:720px){
+    .wrap{padding:18px 16px 110px}
+    .logo-cat{width:52px;height:52px;flex:0 0 52px}
+    .brand h1{font-size:20px}
+    .paper{padding:24px 22px}
+    .core div{min-width:200px}
+    .judge-box svg{width:92px;height:92px;flex:0 0 92px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <svg class="logo-cat" viewBox="0 0 100 100" aria-hidden="true"><use href="#cat"/></svg>
+    <div class="brand">
+      <h1>猫猫法庭</h1>
+      <p>亲友吵架调节 ｜ 奶牛猫法官</p>
+    </div>
+    <div class="meter"><div class="val" id="meterVal">80</div><div class="lbl">亲密指数</div></div>
+  </header>
+
+  <!-- ① 立案 -->
+  <section id="screenInput">
+    <div class="card judge-box">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#cat"/></svg>
+      <div class="bubble" id="introBubble">
+        本喵猫猫法官，今日开庭。<br/>两位把委屈都写下来——<b>不用讲道理，讲感受就行</b>。本喵负责断案，也负责让你们和好。🐾
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="party a">
+        <div class="row"><span class="tag a">甲方</span><input class="name" type="text" id="nameA" value="甲方" maxlength="12" /></div>
+        <textarea id="stA" placeholder="我的委屈是……（例：说好一起吃的最后一块饼干，被对方先吃掉了）"></textarea>
+      </div>
+      <div class="party b">
+        <div class="row"><span class="tag b">乙方</span><input class="name" type="text" id="nameB" value="乙方" maxlength="12" /></div>
+        <textarea id="stB" placeholder="我的委屈是……（例：我以为对方不想吃了，没想到那是留给我们的）"></textarea>
+      </div>
+      <p class="hint">
+        双方陈述不落库，只在单次请求里存在；亲密指数只存在这台设备上。
+        <button class="link" id="btnDemo">填个示例案子</button> ·
+        <button class="link" id="btnSample">看一眼判决书长什么样</button>
+      </p>
+      <div id="errBox"></div>
+    </div>
+  </section>
+
+  <!-- ② 审理中 -->
+  <section id="screenLoading" class="hidden">
+    <div class="card loading">
+      <svg class="gavel" viewBox="0 0 100 100" aria-hidden="true"><use href="#cat"/></svg>
+      <p id="loadingTip">本喵正在翻《共享零食亲密小甜心条款》……</p>
+    </div>
+  </section>
+
+  <!-- ③ 判决书 -->
+  <section id="screenVerdict" class="hidden">
+    <div class="card paper" id="paper"></div>
+    <div class="card">
+      <div id="appealBox" class="hidden">
+        <textarea id="appealText" placeholder="上诉理由：本喵哪里判错了？（例：我们之前约好，分享的零食吃完要补一份）"></textarea>
+        <div style="margin-top:9px"><button class="btn primary sm" id="btnAppealGo">📮 提交上诉，二审开庭</button></div>
+      </div>
+      <div class="btn-row" style="margin-top:9px">
+        <button class="btn ghost sm" id="btnCopyAll">📋 复制判决书</button>
+        <button class="btn ghost sm" id="btnRestart">🔁 新案子</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 亲密指数 -->
+  <section id="screenIntimacy" class="hidden">
+    <div class="card">
+      <div class="ring-wrap">
+        <div class="ring">
+          <svg width="112" height="112" aria-hidden="true">
+            <circle cx="56" cy="56" r="47" stroke="#f3e8ee" stroke-width="12" fill="none"/>
+            <circle id="ringArc" cx="56" cy="56" r="47" stroke="url(#g1)" stroke-width="12" fill="none"
+                    stroke-linecap="round" stroke-dasharray="295.3" stroke-dashoffset="60" style="transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)"/>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffb3c7"/><stop offset="100%" stop-color="#ff6d8f"/></linearGradient></defs>
+          </svg>
+          <div class="num"><b id="ringNum">80</b><small>亲密指数</small></div>
+        </div>
+        <div>
+          <div style="font-size:14.5px;font-weight:800" id="intiTitle">判决已生效，进入和解阶段 🐾</div>
+          <p class="hint" id="intiSub" style="margin-top:5px">完成下面的任务，指数会涨。抱一下最快。</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin:0 0 10px;font-size:14px">💗 和解任务</h3>
+      <div id="taskList"></div>
+      <div class="btn-row" style="margin-top:11px">
+        <button class="btn ghost sm" id="btnBackVerdict">📜 回看判决书</button>
+        <button class="btn ghost sm" id="btnRestart2">🔁 新案子</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">
+    ⭐ 好用的话点个收藏，下次吵架直接开庭。<br/>
+    猫猫法庭只负责调解小矛盾，不构成任何专业心理或医疗建议。<br/>吵得太大的时候，请先抱一下，再来找本喵。
+  </p>
+</div>
+
+<!-- 底部固定操作条 -->
+<div class="dock" id="dockInput"><button class="btn primary" id="btnJudge">🔨 开庭！请猫猫法官判决</button></div>
+<div class="dock hidden" id="dockVerdict">
+  <button class="btn dark" id="btnAccept">✅ 接受判决</button>
+  <button class="btn ghost" id="btnAppeal">⚖️ 我要申诉</button>
+</div>
+
+<div class="float" id="float"></div>
+
+<!-- 奶牛猫法官萌化版：黑头 + 中央白色闪电纹 + 白口罩 + 右下唇黑痣 + 榛绿眼 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="cat" viewBox="0 0 100 100">
+    <g fill="#f7f4ec">
+      <ellipse cx="15" cy="52" rx="10" ry="13"/><circle cx="14" cy="65" r="7.5"/>
+      <ellipse cx="85" cy="52" rx="10" ry="13"/><circle cx="86" cy="65" r="7.5"/>
+    </g>
+    <path d="M21 36 L17 7 L45 21 Z" fill="#241f28"/>
+    <path d="M79 36 L83 7 L55 21 Z" fill="#241f28"/>
+    <path d="M25 33 L23 15 L38 23 Z" fill="#f4a7b6"/>
+    <path d="M75 33 L77 15 L62 23 Z" fill="#f4a7b6"/>
+    <ellipse cx="50" cy="52" rx="33" ry="30" fill="#241f28"/>
+    <path d="M44 20 C42 32 41 42 37 49 C29 61 33 80 50 80 C67 80 71 61 63 49 C59 42 58 32 56 20 C53.5 18 46.5 18 44 20 Z" fill="#fcfaf7"/>
+    <ellipse cx="36.5" cy="63.5" rx="5.5" ry="3.5" fill="#ffd3dc"/>
+    <ellipse cx="63.5" cy="63.5" rx="5.5" ry="3.5" fill="#ffd3dc"/>
+    <ellipse cx="62.2" cy="74.5" rx="4.3" ry="3" fill="#241f28" transform="rotate(-14 62.2 74.5)"/>
+    <g>
+      <ellipse cx="29" cy="45" rx="9" ry="9.4" fill="#c9c05a"/><ellipse cx="71" cy="45" rx="9" ry="9.4" fill="#c9c05a"/>
+      <ellipse cx="29" cy="45" rx="6.6" ry="7.6" fill="#93a24f"/><ellipse cx="71" cy="45" rx="6.6" ry="7.6" fill="#93a24f"/>
+      <ellipse cx="29" cy="45.5" rx="3.4" ry="7.2" fill="#1c1a22"/><ellipse cx="71" cy="45.5" rx="3.4" ry="7.2" fill="#1c1a22"/>
+      <circle cx="31.6" cy="41.6" r="2.1" fill="#fff"/><circle cx="73.6" cy="41.6" r="2.1" fill="#fff"/>
+    </g>
+    <ellipse cx="50" cy="58" rx="7.5" ry="5.4" fill="#f3a2ad"/>
+    <path d="M43.5 59 L56.5 59 L50 67 Z" fill="#f3a2ad"/>
+    <ellipse cx="47.4" cy="56.9" rx="1.8" ry="1.7" fill="#e8919e"/>
+    <ellipse cx="52.6" cy="56.9" rx="1.8" ry="1.7" fill="#e8919e"/>
+    <path d="M50 67 C50 72 44.5 73.5 42 70.5" stroke="#a99aa2" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+    <path d="M50 67 C50 72 55.5 73.5 58 70.5" stroke="#a99aa2" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+    <g stroke="#fdfdfb" stroke-width="1.4" stroke-linecap="round" opacity=".95">
+      <path d="M34 60 L11 54"/><path d="M34 64 L10 65"/><path d="M35 68 L13 75"/>
+      <path d="M66 60 L89 54"/><path d="M66 64 L90 65"/><path d="M65 68 L87 75"/>
+    </g>
+    <path d="M30 84 Q50 99 70 84 L72 100 L28 100 Z" fill="#f7f4ec"/>
+    <path d="M50 88 L37 82 L37 96 Z" fill="#c04a5e"/>
+    <path d="M50 88 L63 82 L63 96 Z" fill="#c04a5e"/>
+    <circle cx="50" cy="89" r="3.6" fill="#e0a92e"/>
+  </symbol>
+</svg>
+
+<script>
+const $ = s => document.querySelector(s);
+const KEY='cat-court-state-v1', CFGKEY='cat-court-cfg-v1';
+let state={intimacy:80,done:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&typeof s.intimacy==='number') state=s;}catch(e){}
+let verdict=null, lastReq=null;
+
+const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+const setMeter=()=>$('#meterVal').textContent=state.intimacy;
+setMeter();
+const esc=t=>String(t==null?'':t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function show(id){
+  ['screenInput','screenLoading','screenVerdict','screenIntimacy'].forEach(s=>$('#'+s).classList.add('hidden'));
+  $('#'+id).classList.remove('hidden');
+  $('#dockInput').classList.toggle('hidden', id!=='screenInput');
+  $('#dockVerdict').classList.toggle('hidden', id!=='screenVerdict');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── Prompt ── */
+async function callJudgeAPI(payload){
+  const r=await fetch('api/judge',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const data=await r.json();
+  if(!r.ok) throw new Error(data.detail||('HTTP '+r.status));
+  return data;
+}
+
+function normalize(v){
+  let a=parseInt(v?.blame?.a,10), b=parseInt(v?.blame?.b,10);
+  if(isNaN(a)||isNaN(b)){a=50;b=50;}
+  const t=a+b; if(t!==100&&t>0){a=Math.round(a*100/t); b=100-a;}
+  v.blame={a:Math.max(0,Math.min(100,a)),b:Math.max(0,Math.min(100,b))};
+  v.intimacy_delta=Math.max(1,Math.min(20,parseInt(v.intimacy_delta,10)||6));
+  v.tasks=(v.tasks||[]).filter(x=>x&&x.title).slice(0,5)
+    .map(x=>({title:String(x.title).slice(0,40),points:Math.max(1,Math.min(8,parseInt(x.points,10)||2))}));
+  if(!v.tasks.length) v.tasks=[{title:'给对方一个 10 秒以上的拥抱',points:3},{title:'一起吃一份想吃很久的零食',points:2},{title:'说一句「刚才那样我其实是想…」',points:3}];
+  return v;
+}
+
+const TIPS=['本喵正在翻《共享零食亲密小甜心条款》……','正在称量双方委屈的重量（用肉垫）……','传唤证人：那盒没被分享的零食……','法袍穿好了，惊堂木也磨亮了……','正在计算「他其实也很难受」的权重……'];
+let tipTimer=null;
+
+$('#btnDemo').onclick=()=>{
+  $('#nameA').value='小云'; $('#nameB').value='小林';
+  $('#stA').value='我们说好晚上一起看电影、分享饼干，但小林提前吃掉了最后一块。我在意的不是一块饼干，而是约好的小事没有被记住。';
+  $('#stB').value='我看到饼干放了好几天，以为小云不想吃了，就顺手吃掉。我忘了我们有约定，也没想到最后一块饼干承载着一起看电影的期待。';
+};
+
+async function runJudge(payload){
+  show('screenLoading');
+  let i=0; $('#loadingTip').textContent=TIPS[0];
+  clearInterval(tipTimer); tipTimer=setInterval(()=>{i=(i+1)%TIPS.length; $('#loadingTip').textContent=TIPS[i];},2200);
+  try{
+    verdict=normalize(await callJudgeAPI(payload));
+    renderVerdict(); show('screenVerdict');
+  }catch(e){
+    show('screenInput');
+    $('#errBox').innerHTML='<div class="err">开庭失败：'+esc(e.message)+'</div>';
+  }finally{ clearInterval(tipTimer); }
+}
+
+$('#btnJudge').onclick=()=>{
+  $('#errBox').innerHTML='';
+  const a={name:$('#nameA').value.trim()||'甲方',statement:$('#stA').value.trim()};
+  const b={name:$('#nameB').value.trim()||'乙方',statement:$('#stB').value.trim()};
+  if(a.statement.length<5||b.statement.length<5){ $('#errBox').innerHTML='<div class="err">两边都要说几句，本喵才好断案 🐾</div>'; return; }
+  lastReq={party_a:a,party_b:b}; runJudge(lastReq);
+};
+$('#btnAppeal').onclick=()=>{ $('#appealBox').classList.toggle('hidden'); $('#appealText').focus(); };
+$('#btnAppealGo').onclick=()=>{
+  const t=$('#appealText').value.trim();
+  if(t.length<4){ alert('上诉理由写具体一点，本喵才好重审'); return; }
+  runJudge(Object.assign({},lastReq,{appeal:t,previous_verdict:verdict}));
+};
+
+/* ── 天平 ── */
+function paw(x,y,c){
+  return `<g fill="${c}" transform="translate(${x},${y})"><ellipse cx="0" cy="2.4" rx="4" ry="3.2"/>`+
+    `<circle cx="-3.4" cy="-2.2" r="1.6"/><circle cx="-1.1" cy="-3.8" r="1.6"/>`+
+    `<circle cx="1.1" cy="-3.8" r="1.6"/><circle cx="3.4" cy="-2.2" r="1.6"/></g>`;
+}
+function balanceSvg(aN,bN,a,b){
+  const paws=(pct,color,cx,cy)=>{const n=Math.max(1,Math.min(5,Math.round(pct/20)));let s='';for(let i=0;i<n;i++)s+=paw(cx-(n-1)*6+i*12,cy,color);return s;};
+  const pan=(cls,x,name,pct,fill,stroke,txt)=>`
+    <g class="pan ${cls}">
+      <line x1="${x}" y1="64" x2="${x}" y2="106" stroke="#c4b49a" stroke-width="2.4"/>
+      <path d="M${x-36} 106 H${x+36} L${x+27} 128 H${x-27} Z" fill="${fill}" stroke="${stroke}" stroke-width="2"/>
+      ${paws(pct,stroke,x,118)}
+      <text x="${x}" y="150" text-anchor="middle" font-size="22" font-weight="800" fill="${stroke}">${pct}%</text>
+      <text x="${x}" y="168" text-anchor="middle" font-size="13" fill="#8a8296">${name}</text>
+      <text x="${x}" y="186" text-anchor="middle" font-size="11.5" fill="#b3aab6">${txt}</text>
+    </g>`;
+  const heavier = a===b ? '平局' : (a>b?aN:bN);
+  return `<svg class="balance" viewBox="0 0 360 196" role="img" aria-label="责任分配天平 ${aN} ${a}% ${bN} ${b}%">
+    <path d="M150 176 H210 L198 158 H162 Z" fill="#e3d6c2"/>
+    <rect x="140" y="176" width="80" height="7" rx="3.5" fill="#d6c6ad"/>
+    <rect x="176" y="66" width="8" height="94" rx="4" fill="#d6c6ad"/>
+    <g class="beam" style="transform-origin:180px 64px">
+      <rect x="52" y="60" width="256" height="8" rx="4" fill="#c4b49a"/>
+      <circle cx="70" cy="64" r="4" fill="#b3a184"/><circle cx="290" cy="64" r="4" fill="#b3a184"/>
+    </g>
+    <circle cx="180" cy="64" r="8" fill="#e0a92e"/><circle cx="180" cy="64" r="3" fill="#fff8e6"/>
+    ${pan('pan-a',70,aN,a,'#ffe8ee','#ff6d8f',a>=b?'多抬一点':'少抬一点')}
+    ${pan('pan-b',290,bN,b,'#e7f0ff','#5b9bff',b>=a?'多抬一点':'少抬一点')}
+  </svg>
+  <p class="verdict-who">本次由 <b>${heavier}</b> 多抬一点。抬得多不是输，是离和好更近。</p>`;
+}
+
+function renderVerdict(){
+  const v=verdict, aN=esc(lastReq.party_a.name), bN=esc(lastReq.party_b.name);
+  const charges=(v.charges||[]).map(c=>{
+    const lv=['重罪','轻罪','微罪'].includes(c.level)?c.level:'轻罪';
+    return `<div class="charge"><span class="lvl ${lv}">${lv}</span><div><div class="who">${esc(c.party)} · ${esc(c.clause||'')}</div><div class="txt">${esc(c.text)}</div></div></div>`;
+  }).join('');
+  const steps=(v.reconcile_steps||[]).map(s=>`<li><b>${esc(s.title)}</b><span>${esc(s.detail)}${s.owner?'　执行人：'+esc(s.owner):''}</span></li>`).join('');
+  $('#paper').innerHTML=`
+    <h2>判 决 书</h2>
+    <div class="caseno">${esc(v.case_no||'喵字第 001 号')} · ${esc(v.title||'')}</div>
+    <div class="sec"><h3>一、争议本质</h3><p>${esc(v.essence)}</p>
+      <div class="core" style="margin-top:10px">
+        <div class="ca"><b>${aN} 真正要的</b><br/>${esc(v.party_a_core||'')}</div>
+        <div class="cb"><b>${bN} 真正要的</b><br/>${esc(v.party_b_core||'')}</div>
+      </div></div>
+    <div class="sec"><h3>二、责任分配</h3>${balanceSvg(aN,bN,v.blame.a,v.blame.b)}
+      <p class="balance-note">天平往哪边沉，谁这次就多抬一点手。<b>这不是投票，也不是谁更占理</b>，而是本喵分配的「下次可以先改的那一点」——担得多的那位，只是离和好更近。</p></div>
+    <div class="sec"><h3>三、罪名认定</h3>${charges}</div>
+    <div class="sec"><h3>四、本院判决</h3><div class="verdict-text">${esc(v.verdict)}</div></div>
+    <div class="sec"><h3>五、和解执行方案</h3><ol class="steps">${steps}</ol></div>
+    <div class="sec"><h3>六、可直接转发对方</h3><div class="msgbox">${esc(v.message_to_partner)}</div>
+      <div style="margin-top:9px"><button class="btn ghost sm" id="btnCopyMsg">💌 复制这段话发给 TA</button></div></div>
+    <p class="catnote">🐾 ${esc(v.cat_note||'吵架不可怕，可怕的是没人先伸爪子。')}</p>
+    <svg class="stamp" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#d0483f" stroke-width="4"/>
+      <text x="50" y="42" text-anchor="middle" font-size="20" fill="#d0483f" font-weight="bold">猫猫</text>
+      <text x="50" y="66" text-anchor="middle" font-size="20" fill="#d0483f" font-weight="bold">法庭</text></svg>`;
+  setTimeout(()=>{
+    const tilt=Math.max(-11,Math.min(11,(v.blame.a-v.blame.b)/100*11));
+    const dy=118*Math.sin(tilt*Math.PI/180);
+    const beam=$('#paper .beam');
+    if(beam){ beam.style.transform='rotate('+(-tilt)+'deg)';
+      $('#paper .pan-a').style.transform='translateY('+dy.toFixed(1)+'px)';
+      $('#paper .pan-b').style.transform='translateY('+(-dy).toFixed(1)+'px)'; }
+  },150);
+  $('#btnCopyMsg').onclick=()=>copy(v.message_to_partner,'已复制，去发给 TA 吧 💌');
+}
+
+function plainVerdict(){
+  const v=verdict,aN=lastReq.party_a.name,bN=lastReq.party_b.name;
+  return `【猫猫法庭 判决书】${v.case_no||''} ${v.title||''}
+一、争议本质：${v.essence}
+${aN} 真正要的：${v.party_a_core||''}
+${bN} 真正要的：${v.party_b_core||''}
+二、责任分配（本喵的天平，不是投票）：${aN} ${v.blame.a}% / ${bN} ${v.blame.b}%
+三、罪名认定：
+${(v.charges||[]).map(c=>`  · [${c.level}] ${c.party}：${c.text}（${c.clause||''}）`).join('\n')}
+四、本院判决：${v.verdict}
+五、和解方案：
+${(v.reconcile_steps||[]).map((s,i)=>`  ${i+1}. ${s.title} — ${s.detail}`).join('\n')}
+六、想对你说：${v.message_to_partner}
+🐾 ${v.cat_note||''}`;
+}
+
+function copy(text,tip){
+  if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(text).then(()=>floatTip(tip||'已复制')).catch(()=>fallbackCopy(text,tip)); }
+  else fallbackCopy(text,tip);
+}
+function fallbackCopy(text,tip){
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); floatTip(tip||'已复制'); }catch(e){ alert('复制失败，请长按选择文字'); }
+  document.body.removeChild(ta);
+}
+$('#btnCopyAll').onclick=()=>copy(plainVerdict(),'整份判决书已复制 📋');
+function floatTip(t){ const f=$('#float'); f.textContent=t; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); }
+
+/* ── 亲密指数 ── */
+function renderIntimacy(){
+  $('#ringNum').textContent=state.intimacy; $('#meterVal').textContent=state.intimacy;
+  const pct=Math.max(0,Math.min(100,state.intimacy));
+  $('#ringArc').setAttribute('stroke-dashoffset',String(295.3*(1-pct/100)));
+  const tasks=(verdict&&verdict.tasks)||[];
+  $('#taskList').innerHTML=tasks.map((t,i)=>{
+    const id=(verdict.case_no||'c')+'#'+i, done=!!state.done[id];
+    return `<div class="task ${done?'done':''}" data-id="${esc(id)}" data-p="${t.points}"><div class="box">${done?'✓':''}</div><div class="t">${esc(t.title)}</div><div class="p">+${t.points}</div></div>`;
+  }).join('')||'<p class="hint">这次没有额外任务，抱一下就行 🐾</p>';
+  $('#taskList').querySelectorAll('.task').forEach(el=>{
+    el.onclick=()=>{
+      const id=el.dataset.id,p=parseInt(el.dataset.p,10)||1;
+      if(state.done[id]) return;
+      state.done[id]=true; state.intimacy=Math.min(100,state.intimacy+p); save(); floatTip('+'+p); renderIntimacy();
+    };
+  });
+}
+$('#btnAccept').onclick=()=>{
+  const d=(verdict&&verdict.intimacy_delta)||5, before=state.intimacy;
+  state.intimacy=Math.min(100,state.intimacy+d); save(); show('screenIntimacy');
+  $('#intiTitle').textContent='判决已生效 · 亲密指数 '+before+' → '+state.intimacy+' 🐾';
+  $('#intiSub').textContent='接受判决本身就是和解的第一步。剩下的任务，完成一条涨一条。';
+  renderIntimacy(); floatTip('+'+d);
+};
+$('#btnBackVerdict').onclick=()=>show('screenVerdict');
+function restart(){ verdict=null; $('#appealText').value=''; $('#appealBox').classList.add('hidden'); setMeter(); show('screenInput'); }
+$('#btnRestart').onclick=restart; $('#btnRestart2').onclick=restart;
+
+/* ── 内置示例判决书（无需 Key 也能看效果） ── */
+const SAMPLE={
+  "case_no": "喵字第 0001 号",
+  "title": "最后一块饼干去哪儿了",
+  "essence": "小云在意的是被记住的约定：那块饼干代表一起看电影的小仪式。小林把零食当作随手可吃的东西，没有意识到它已经被约定留给两个人。双方争执的核心，是同一件小事在各自心里的分量不同。小林需要承认忘记约定造成了失落；小云也可以把期待说得更清楚。把约定重新写明，比追查饼干的去向更能帮助两只猫和好。",
+  "party_a_core": "希望说好的小事也能被认真记住。",
+  "party_b_core": "希望弄错之后，有具体的方法可以补救。",
+  "blame": {
+    "a": 25,
+    "b": 75
+  },
+  "charges": [
+    {
+      "party": "小林",
+      "level": "轻罪",
+      "clause": "《共享零食先问一声条款》第一条",
+      "text": "未经询问就吃掉约好分享的最后一块饼干"
+    },
+    {
+      "party": "小云",
+      "level": "微罪",
+      "clause": "《心中小期待请说出口条款》第二条",
+      "text": "把失落藏进反话，让对方猜不出真正的需求"
+    }
+  ],
+  "verdict": "本喵宣布：最后一块饼干虽已失踪，约定仍可补上。小林承担较多责任，应认真道歉并补一份双方喜欢的零食；小云请直接说出自己的期待，不必用反话考验猫的阅读理解。今晚重新约一场电影，共享第一块饼干。喵。",
+  "reconcile_steps": [
+    {
+      "step": 1,
+      "title": "认领失误",
+      "detail": "小林说：我忘了约定，让你失落了，对不起。",
+      "owner": "小林"
+    },
+    {
+      "step": 2,
+      "title": "说出期待",
+      "detail": "小云说：我想要的是你记得我们说好的事。",
+      "owner": "小云"
+    },
+    {
+      "step": 3,
+      "title": "补上分享",
+      "detail": "一起挑一份零食，重新约好看电影的时间。",
+      "owner": "双方"
+    },
+    {
+      "step": 4,
+      "title": "写个小纸条",
+      "detail": "给准备一起吃的零食贴上「等你一起」便签。",
+      "owner": "双方"
+    }
+  ],
+  "message_to_partner": "我刚才生气，是因为很期待和你一起看电影、分享饼干。我知道你没有故意让我失望，但我希望说好的小事也能被记住。以后我会直接告诉你哪些东西想留着一起吃；如果你忘记了，我们就说清楚，再一起补上这个小约定。",
+  "intimacy_delta": 8,
+  "tasks": [
+    {
+      "title": "一起挑一份喜欢的零食",
+      "points": 3
+    },
+    {
+      "title": "给下次分享的零食贴上便签",
+      "points": 2
+    },
+    {
+      "title": "说一句「我刚才真正想说的是…」",
+      "points": 3
+    },
+    {
+      "title": "约好下一次一起看电影的时间",
+      "points": 2
+    }
+  ],
+  "cat_note": "本喵只收一块饼干当庭审费，记得留给大家一起吃。喵。"
+};
+$('#btnSample').onclick=()=>{
+  lastReq={party_a:{name:'小云',statement:''},party_b:{name:'小林',statement:''}};
+  verdict=JSON.parse(JSON.stringify(SAMPLE)); renderVerdict(); show('screenVerdict');
+};
+
+
+</script>
+</body>
+</html>
